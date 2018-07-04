@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "387721289841",
+    "firebase_url": "https://my-stories-403bb.firebaseio.com",
+    "project_id": "my-stories-403bb",
+    "storage_bucket": "my-stories-403bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387721289841:android:afd9351e2e596bac",
+        "android_client_info": {
+          "package_name": "com.challenge.hufsy.mystories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387721289841-bd2q3lri9bj62fph88tbji7mgl10mai4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1ThiWesch_6N1gacEjPYaHWEXOenRf8g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

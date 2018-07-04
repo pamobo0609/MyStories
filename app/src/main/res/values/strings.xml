@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">My Stories</string>
+    <string name="my.story">My story</string>
+    <string name="tap.to.add.new.story">Tap to add a new story</string>
+    <string name="menu.settings">Settings</string>
+    <string name="all.permissions.are.required">All permissions are required</string>
+    <string name="uploaded.stories">Uploaded stories</string>
+    <string name="unknown.uri">Unknown URI: %s</string>
+    <string name="open.camera">Open camera</string>
+    <string name="open.gallery">Open gallery</string>
+    <string name="choose.a.photo.or.video">Choose a photo or video</string>
+    <string name="there.are.no.stories.yet.add.one">There are no stories yet\nDon\'t hesitate to add one</string>
+    <string name="no.stories.yet">No stories yet</string>
+    <string name="no.camera.installed">No camera apps installed Please install one to continue</string>
+    <string name="error.while.creating.image.file">An error has occurred while creating the image file Please retry</string>
+    <string name="file.upload">File upload</string>
+    <string name="uploading.in.progress">Uploading in progress</string>
+    <string name="file.uploaded">File uploaded!</string>
+    <string name="request.canceled">Request cancelled</string>
+    <string name="unexpected.error.pls.retry">An unexpected error has occurred. Please try again</string>
+</resources>

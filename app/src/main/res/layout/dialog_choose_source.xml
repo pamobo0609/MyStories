@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_padding_size_medium"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/buttonOpenCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/open.camera"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_medium" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/buttonOpenGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/open.gallery"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_medium" />
+
+</LinearLayout>
