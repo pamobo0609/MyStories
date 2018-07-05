@@ -10,6 +10,8 @@ public interface MyStoriesConstants {
 
     String IMAGES_CHILD = "stories";
 
-    String UPLOAD_CHANNEL_ID = "96";
+    String UPLOAD_CHANNEL_ID = "uploadChannel";
+
+    String UPLOAD_CHANNEL_NAME = "Upload Channel";
 
 }

@@ -2,6 +2,7 @@ package com.challenge.hufsy.mystories.screen.main;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -15,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -24,13 +24,14 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 
 import com.challenge.hufsy.mystories.BuildConfig;
 import com.challenge.hufsy.mystories.R;
-import com.challenge.hufsy.mystories.app.MyStoriesConstants;
+import com.challenge.hufsy.mystories.app.FileNameValidator;
 import com.challenge.hufsy.mystories.app.base.BaseCellDelegateAdapter;
 import com.challenge.hufsy.mystories.app.di.AppComponentHolder;
 import com.challenge.hufsy.mystories.model.Story;
@@ -132,8 +133,9 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
 
             switch (storyViewObject.getStatus()) {
                 case LOADING:
+                    com.challenge.hufsy.mystories.app.NotificationManager.getInstance().notifyUpload(R.string.file_upload,
+                            R.string.uploading_in_progress, R.drawable.insert_photo);
 
-                    showUploadNotification();
                     break;
 
                 case ERROR:
@@ -146,9 +148,10 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
                     break;
 
                 case SUCCESS:
-                    showMessage(R.string.file_uploaded);
 
-                    viewModel.loadStories();
+                    com.challenge.hufsy.mystories.app.NotificationManager.getInstance().dismiss();
+
+                    showMessage(R.string.file_uploaded);
 
                     break;
             }
@@ -270,6 +273,7 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
     @Override
     public void routeToNewStory() {
         final Dialog aDialog = new Dialog(this);
+        aDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         aDialog.setContentView(R.layout.dialog_choose_source);
 
         final AppCompatButton openCamera = aDialog.findViewById(R.id.buttonOpenCamera);
@@ -322,6 +326,7 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
 
     @Override
     public void routeToOpenStory(Story clickedStory) {
+
         final Intent openStoryDetail = new Intent(this, StoryViewerActivity.class);
         openStoryDetail.putExtra(StoryViewerActivityContract.STORY_EXTRA_KEY, clickedStory);
 
@@ -392,19 +397,6 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
         viewModel.setImageAbsolutePath(Uri.fromFile(image).toString());
 
         return image;
-    }
-
-    private void showUploadNotification() {
-        final NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MyStoriesConstants.UPLOAD_CHANNEL_ID);
-        builder.setContentTitle(getString(R.string.file_upload))
-                .setContentText(getString(R.string.uploading_in_progress))
-                .setSmallIcon(R.drawable.insert_photo)
-                .setPriority(NotificationCompat.PRIORITY_LOW);
-
-        builder.setProgress(100, 0, true);
-        notificationManagerCompat.notify(1, builder.build());
-
     }
 
     private String getFileName(String absolutePath) {

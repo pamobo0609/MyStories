@@ -17,29 +17,23 @@ public class ViewObject<T> {
     private T data;
     @Nullable
     private Throwable error;
-    @Nullable
-    private Integer progress;
 
-    private ViewObject(@NonNull Status status, @Nullable T data, @Nullable Throwable error, @Nullable Integer progress) {
+    private ViewObject(@NonNull Status status, @Nullable T data, @Nullable Throwable error) {
         this.status = status;
         this.data = data;
         this.error = error;
     }
 
     public static <T> ViewObject<T> loading() {
-        return new ViewObject<>(Status.LOADING, null, null, null);
+        return new ViewObject<>(Status.LOADING, null, null);
     }
 
     public static <T> ViewObject<T> success(@Nullable T data) {
-        return new ViewObject<>(Status.SUCCESS, data, null, null);
+        return new ViewObject<>(Status.SUCCESS, data, null);
     }
 
     public static <T> ViewObject<T> error(@Nullable Throwable error) {
-        return new ViewObject<>(Status.ERROR, null, error, null);
-    }
-
-    public static <T> ViewObject<T> progress(@Nullable Integer progress) {
-        return new ViewObject<>(Status.ERROR, null, null, progress);
+        return new ViewObject<>(Status.ERROR, null, error);
     }
 
     @NonNull
@@ -57,16 +51,10 @@ public class ViewObject<T> {
         return error;
     }
 
-    @Nullable
-    public Integer getProgress() {
-        return progress;
-    }
-
     public enum Status {
         LOADING,
         SUCCESS,
         ERROR,
-        UPDATING_PROGRESS
     }
 
 }

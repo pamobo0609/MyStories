@@ -3,10 +3,9 @@ package com.challenge.hufsy.mystories.app.di;
 import android.content.Context;
 
 import com.challenge.hufsy.mystories.app.App;
-import com.google.firebase.database.DatabaseReference;
+import com.challenge.hufsy.mystories.app.NotificationManager;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import javax.inject.Singleton;
 

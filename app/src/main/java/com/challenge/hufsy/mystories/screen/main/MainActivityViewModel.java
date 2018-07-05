@@ -147,12 +147,7 @@ public class MainActivityViewModel extends ViewModel implements MainActivityCont
                 }).addOnCanceledListener(() -> addNewStoryLiveData.setValue(ViewObject.error(new RuntimeException(ResExtractor.getInstance()
                         .getString(R.string.request_canceled))))))
 
-                .addOnFailureListener(e -> addNewStoryLiveData.setValue(ViewObject.error(e)))
-
-                .addOnProgressListener(taskSnapshot -> {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    addNewStoryLiveData.setValue(ViewObject.progress((int) progress));
-                });
+                .addOnFailureListener(e -> addNewStoryLiveData.setValue(ViewObject.error(e)));
 
     }
 

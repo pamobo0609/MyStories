@@ -63,6 +63,9 @@ dependencies {
     implementation "com.google.firebase:firebase-storage:$firebaseVersion"
     implementation "com.google.firebase:firebase-database:$firebaseVersion"
 
+    // To handle uploaded videos
+    implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

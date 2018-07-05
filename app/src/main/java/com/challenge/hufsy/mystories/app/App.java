@@ -7,6 +7,8 @@ import com.challenge.hufsy.mystories.app.di.AppModule;
 import com.challenge.hufsy.mystories.app.di.DaggerAppComponent;
 import com.google.firebase.FirebaseApp;
 
+import javax.inject.Inject;
+
 /**
  * MyStories
  * <p>
@@ -29,5 +31,9 @@ public class App extends Application {
 
         FirebaseApp.initializeApp(this);
 
+        NotificationManager.getInstance().init(this);
     }
+
+
+
 }
