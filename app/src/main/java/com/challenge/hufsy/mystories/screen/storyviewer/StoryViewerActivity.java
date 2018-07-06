@@ -10,9 +10,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.challenge.hufsy.mystories.R;
-import com.challenge.hufsy.mystories.app.FileNameValidator;
+import com.challenge.hufsy.mystories.app.FileUtil;
+import com.challenge.hufsy.mystories.app.di.AppComponentHolder;
 import com.challenge.hufsy.mystories.model.Story;
 import com.challenge.hufsy.mystories.screen.base.BaseButterKnifeActivity;
+import com.challenge.hufsy.mystories.screen.storyviewer.di.DaggerStoryViewerActivityComponent;
+import com.challenge.hufsy.mystories.screen.storyviewer.di.StoryViewerActivityComponentHolder;
 import com.challenge.hufsy.mystories.screen.view.StoryViewerViewModel;
 import com.challenge.hufsy.mystories.screen.view.TouchImageView;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -26,6 +29,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -38,6 +43,9 @@ public class StoryViewerActivity extends BaseButterKnifeActivity implements Stor
     @BindView(R.id.videoPlayer)
     protected PlayerView videoPlayer;
 
+    @Inject
+    protected FileUtil fileUtil;
+
     private SimpleExoPlayer player;
 
     private StoryViewerActivityContract.ViewModel viewModel;
@@ -49,6 +57,11 @@ public class StoryViewerActivity extends BaseButterKnifeActivity implements Stor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        StoryViewerActivityComponentHolder.getInstance().bindComponent(DaggerStoryViewerActivityComponent.builder()
+                .appComponent(AppComponentHolder.getInstance().getComponent()).build());
+
+        StoryViewerActivityComponentHolder.getInstance().getComponent().inject(this);
+
         viewModel = ViewModelProviders.of(this).get(StoryViewerViewModel.class);
         viewModel.getCloseEvent().observe(this, aVoid -> routeBack());
 
@@ -58,9 +71,7 @@ public class StoryViewerActivity extends BaseButterKnifeActivity implements Stor
             routeBack();
         } else {
 
-            final FileNameValidator nameValidator = new FileNameValidator();
-
-            if (nameValidator.isAVideo(extra.getName())) {
+            if (fileUtil.isAVideo(extra.getName())) {
 
                 storyImage.setVisibility(View.GONE);
                 videoPlayer.setVisibility(View.VISIBLE);
@@ -110,6 +121,12 @@ public class StoryViewerActivity extends BaseButterKnifeActivity implements Stor
         if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        StoryViewerActivityComponentHolder.getInstance().unbindComponent();
     }
 
     @Override

@@ -50,4 +50,8 @@ ext {
     // Exo player
     exoPlayerVersion = '2.8.0'
 
+    // Automated testing
+    testRulesVersion = '1.0.2'
+    espressoVersion = '3.0.2'
+
 }

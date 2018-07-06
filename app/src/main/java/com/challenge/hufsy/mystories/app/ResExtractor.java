@@ -1,5 +1,6 @@
 package com.challenge.hufsy.mystories.app;
 
+import android.app.Application;
 import android.support.annotation.StringRes;
 
 /**
@@ -11,7 +12,7 @@ import android.support.annotation.StringRes;
 public final class ResExtractor {
     private static final ResExtractor ourInstance = new ResExtractor();
 
-    private App app;
+    private Application app;
 
     public static ResExtractor getInstance() {
         return ourInstance;
@@ -20,7 +21,7 @@ public final class ResExtractor {
     private ResExtractor() {
     }
 
-    public void init(App app) {
+    public void init(Application app) {
         this.app = app;
     }
 

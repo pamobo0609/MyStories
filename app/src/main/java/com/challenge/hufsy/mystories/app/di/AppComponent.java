@@ -3,6 +3,7 @@ package com.challenge.hufsy.mystories.app.di;
 import android.content.Context;
 
 import com.challenge.hufsy.mystories.app.App;
+import com.challenge.hufsy.mystories.app.FileUtil;
 import com.challenge.hufsy.mystories.app.NotificationManager;
 import com.challenge.hufsy.mystories.app.di.scope.ActivityScope;
 import com.google.firebase.database.DatabaseReference;
@@ -28,8 +29,12 @@ public interface AppComponent {
 
     FirebaseDatabase provideDatabaseRef();
 
+    FileUtil provideFileUtil();
+
     Context provideContext();
 
     void inject(App app);
+
+
 
 }

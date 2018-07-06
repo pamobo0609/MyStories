@@ -66,6 +66,12 @@ dependencies {
     // To handle uploaded videos
     implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
 
+    // Automated testing
+    androidTestImplementation "com.android.support.test:rules:$testRulesVersion"
+    androidTestImplementation "com.android.support.test:runner:$testRulesVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espressoVersion"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

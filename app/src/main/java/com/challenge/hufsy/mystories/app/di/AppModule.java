@@ -3,6 +3,7 @@ package com.challenge.hufsy.mystories.app.di;
 import android.content.Context;
 
 import com.challenge.hufsy.mystories.app.App;
+import com.challenge.hufsy.mystories.app.FileUtil;
 import com.challenge.hufsy.mystories.app.NotificationManager;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +44,12 @@ public class AppModule {
     @Singleton
     protected FirebaseDatabase provideDatabaseRef() {
         return FirebaseDatabase.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    protected FileUtil provideFileUtil() {
+        return new FileUtil(app);
     }
 
 }

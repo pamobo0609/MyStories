@@ -2,21 +2,16 @@ package com.challenge.hufsy.mystories.screen.main;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,12 +21,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 
 import com.challenge.hufsy.mystories.BuildConfig;
 import com.challenge.hufsy.mystories.R;
-import com.challenge.hufsy.mystories.app.FileNameValidator;
+import com.challenge.hufsy.mystories.app.FileUtil;
 import com.challenge.hufsy.mystories.app.base.BaseCellDelegateAdapter;
 import com.challenge.hufsy.mystories.app.di.AppComponentHolder;
 import com.challenge.hufsy.mystories.model.Story;
@@ -68,6 +62,9 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
 
     @Inject
     protected MainActivityViewModelFactory viewModelFactory;
+
+    @Inject
+    protected FileUtil fileUtil;
 
     @BindView(R.id.swipeToRefresh)
     protected SwipeRefreshLayout swipeToRefresh;
@@ -180,9 +177,9 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
 
                     final Uri selectedFile = data.getData();
 
-                    final String absolutePath = getPath(selectedFile);
-                    viewModel.setFileName(getFileName(absolutePath));
-                    viewModel.setFileExtension(getFileExtension(selectedFile));
+                    final String absolutePath = fileUtil.getPath(selectedFile);
+                    viewModel.setFileName(fileUtil.getFileName(absolutePath));
+                    viewModel.setFileExtension(fileUtil.getFileExtension(selectedFile));
 
                     viewModel.setImageAbsolutePath(selectedFile.toString());
 
@@ -298,14 +295,22 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
         if (null == openCamera.resolveActivity(getPackageManager())) {
             showMessage(R.string.no_camera_installed);
         } else {
+            final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+            final String imageFileName = "JPEG_" + timeStamp + "_";
+
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = fileUtil.createImageFile(imageFileName);
             } catch (IOException ex) {
                 showMessage(R.string.error_while_creating_image_file);
             }
 
             if (null != photoFile) {
+                viewModel.setFileName(imageFileName);
+                viewModel.setFileExtension(".jpg");
+
+                viewModel.setImageAbsolutePath(Uri.fromFile(photoFile).toString());
+
                 final Uri uriForFile = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".provider"),
                         photoFile);
 
@@ -379,49 +384,5 @@ public class MainActivity extends BaseButterKnifeActivity implements MainActivit
             adapter.notifyDataSetChanged();
         }
     }
-
-    private File createImageFile() throws IOException {
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-        final String imageFileName = "JPEG_" + timeStamp + "_";
-
-        final File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        final File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        viewModel.setFileName(imageFileName);
-        viewModel.setFileExtension(".jpg");
-
-        viewModel.setImageAbsolutePath(Uri.fromFile(image).toString());
-
-        return image;
-    }
-
-    private String getFileName(String absolutePath) {
-        return absolutePath.substring(absolutePath.lastIndexOf("/") + 1).split("\\.")[0];
-    }
-
-    private String getFileExtension(Uri uri) {
-        final ContentResolver contentResolver = getContentResolver();
-        final MimeTypeMap mime = MimeTypeMap.getSingleton();
-
-        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
-    public String getPath(Uri uri) {
-        final String[] projection = {MediaStore.Video.Media.DATA};
-        final Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (null == cursor) {
-            return null;
-        } else {
-            final int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
-    }
-
 
 }
