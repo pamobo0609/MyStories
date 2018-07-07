@@ -22,11 +22,7 @@ Explain how to run the automated tests for this system
 
 ### Break down into end to end tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
+Tests are developed using Espresso. You can run them in Firebase's Test Lab or locally.
 
 ## Built With
 
